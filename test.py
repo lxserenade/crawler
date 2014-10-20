@@ -34,9 +34,7 @@ def get_news_comment(url):
 # path-遍历起始绝对路径  
 TargetFileType=['html','shtml']
 log=[]
-num=0
 def process(path):  
-	global num
 	for i in os.listdir(path):
 		if not os.path.isdir(path + '\\' + i):
 			if i.split('.')[-1].lower() in TargetFileType:
