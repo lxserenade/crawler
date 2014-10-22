@@ -30,7 +30,17 @@ def get_news_comment(url):
     return comment["result"]["count"]
 #########################
 
+
+#########################
+#the file was created(modified) after time_flag, return true;
+#e.x  time_flag='2014-10-22 00:00:00'
+def is_new_file(filePath,time_flag):
+    tf=int(time.mktime(time.strptime(time_flag, "%Y-%m-%d %H:%M:%S")))
+    mt=os.stat("./data.txt").st_mtime#file modify time
+    return mt>=tf
+
 num=0
+time_flag='2014-10-23 00:00:00'
 #########################
 # 递归遍历指定的目录  
 # path-遍历起始绝对路径  
@@ -40,17 +50,19 @@ def process(path):
 	for i in os.listdir(path):
 		if not os.path.isdir(path + '\\' + i):
 			if i.split('.')[-1].lower() in TargetFileType:
-				url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
-				com=get_news_comment(url)
-				print com
-				global log
-				log.append(com)
-				global num
-				num=num+1
-				if num%20==0:
-					print '----------------------------------'
-					print num
-					print '----------------------------------'
+
+				if is_new_file('.\\'+i,time_flag):
+					url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
+					com=get_news_comment(url)
+					print com
+					global log
+					log.append(com)
+					global num
+					num=num+1
+					if num%20==0:
+						print '----------------------------------'
+						print num
+						print '----------------------------------'
 					
 		else:
 			process(path + '\\'+i)
