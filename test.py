@@ -6,6 +6,7 @@ import re
 import json
 import csv
 import socket
+import time
 
 socket.setdefaulttimeout(10) # 10 秒钟后超时
 ########################
@@ -25,19 +26,39 @@ def get_news_comment(url):
 		comment_data=urllib.urlopen(comment_url).read().decode('gb2312','ignore')
 		comment=json.loads(comment_data[9:])
 		com=comment["result"]["count"]
-    except:
-		return "{{u'qreply': None, u'total': None, u'show': None}}"
+    except Exception, e:
+    	print e
+    	return "{{u'qreply': None, u'total': None, u'show': None}}"
     return comment["result"]["count"]
 #########################
 
 
 #########################
-#the file was created(modified) after time_flag, return true;
+#if the file was created(modified) after time_flag, return true;
 #e.x  time_flag='2014-10-22 00:00:00'
 def is_new_file(filePath,time_flag):
     tf=int(time.mktime(time.strptime(time_flag, "%Y-%m-%d %H:%M:%S")))
-    mt=os.stat("./data.txt").st_mtime#file modify time
+    mt=os.stat(filePath).st_mtime#file modify time
     return mt>=tf
+
+#########################
+#if the page was modified after time_flag, return true;
+#e.x  time_flag='2014-10-22 00:00:00'
+def is_new_page(url,time_target):
+	try:
+		tf=int(time.mktime(time.strptime(time_flag, "%Y-%m-%d %H:%M:%S")))
+		page=urllib.urlopen(url)
+		page_mtime=" ".join(page.info()["Last-Modified"].split(' ')[1:-1])
+		pt=time.mktime(time.strptime(page_mtime,"%d %b %Y %H:%M:%S"))
+	except Exception,e:
+		print "get last-modified time error"
+		return False
+	return pt>=tf 
+
+
+
+##############################################################################
+
 
 num=0
 time_flag='2014-10-23 00:00:00'
@@ -48,13 +69,14 @@ TargetFileType=['html','shtml']
 log=[]
 def process(path):  
 	for i in os.listdir(path):
-		if not os.path.isdir(path + '\\' + i):
+		if not os.path.isdir(path + '\\' + i):	
 			if i.split('.')[-1].lower() in TargetFileType:
 
-				if is_new_file('.\\'+i,time_flag):
-					url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
+				url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
+				print url
+				if is_new_page(url,time_flag):
+					
 					com=get_news_comment(url)
-					print com
 					global log
 					log.append(com)
 					global num
@@ -70,9 +92,10 @@ def process(path):
 
 
 #测试代码  
-rootpath = os.path.abspath('D:\\LX\\li\\')  
+rootpath = os.path.abspath('D:\\LX\\li\\')
 process(rootpath)
 print len(log)
+
 fl=open('log.txt','w')
 for i in log:
     fl.write(str(i))
