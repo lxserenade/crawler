@@ -28,7 +28,7 @@ def get_news_comment(url):
 		com=comment["result"]["count"]
     except Exception, e:
     	print e
-    	return "{{u'qreply': None, u'total': None, u'show': None}}"
+    	return "{u'qreply': None, u'total': None, u'show': None}"
     return comment["result"]["count"]
 #########################
 
