@@ -46,7 +46,7 @@ def plot_data(l):
 	for count, x in zip(counts, bin_centers):
 	    # Label the raw counts
 	    ax.annotate(str(int(count)), xy=(x, 0), xycoords=('data', 'axes fraction'),
-	        xytext=(0, -30), textcoords='offset points', va='top', ha='center')
+	        xytext=(0, -40), textcoords='offset points', va='top', ha='center')
 
 	    # Label the percentages
 	    percent = '%0.0f%%' % (100 * float(count) / counts.sum())
@@ -79,5 +79,5 @@ print len(qreply_list)
 print len(total_list)
 print len(show_list)
 
-plot_data(total_list)
+plot_data(show_list)
 
