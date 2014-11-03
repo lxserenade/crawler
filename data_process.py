@@ -58,7 +58,7 @@ def plot_data(l):
 	plt.subplots_adjust(bottom=0.15)
 	plt.grid(True)
 	plt.xlabel("total reply")
-	plt.ylabel("number of item(web pages)")
+	plt.ylabel("pages")
 	plt.title("2014/10/21-2014/10/22  sina new pages")
 	plt.show()
 
@@ -79,5 +79,5 @@ print len(qreply_list)
 print len(total_list)
 print len(show_list)
 
-plot_data(show_list)
+plot_data(total_list)
 

@@ -1,5 +1,10 @@
 #!/use/bin/env python
 #-*- coding:utf8 -*-
+###############################
+#get comments from wget download files
+############################
+
+
 import os,sys
 import urllib
 import re
@@ -55,39 +60,51 @@ def is_new_page(url,time_target):
 		return False
 	return pt>=tf 
 
-
+##########################
+#get topdatalist 
+# top comment
+def getTopComments(num):
+	url='http://top.news.sina.com.cn/ws/GetTopDataList.php?top_type=day&top_cat=qbpdpl&top_time=20141031&top_show_num='+str(num)+'&top_order=DESC&js_var=comment_all_data'
+	data=(urllib.urlopen(url).read().decode('gb2312','ignore')[22:-2])
+	return json.loads(data)
 
 ##############################################################################
+def getTopClick(num):
+	url='http://top.news.sina.com.cn/ws/GetTopDataList.php?top_type=day&top_cat=www_all&top_time=20141031&top_show_num='+str(num)+'&top_order=ASC&js_var=all_1_data01'
+	data=(urllib.urlopen(url).read().decode('gb2312','ignore')[18:-2])
+	return json.loads(data)
 
+###################################################################
+#get all new pages comments
 
-num=0
-time_flag='2014-10-23 00:00:00'
-#########################
-# 递归遍历指定的目录  
-# path-遍历起始绝对路径  
-TargetFileType=['html','shtml']
-log=[]
-def process(path):  
-	for i in os.listdir(path):
-		if not os.path.isdir(path + '\\' + i):	
-			if i.split('.')[-1].lower() in TargetFileType:
+# num=0
+# time_flag='2014-10-23 00:00:00'
+# #########################
+# # 递归遍历指定的目录  
+# # path-遍历起始绝对路径  
+# TargetFileType=['html','shtml']
+# log=[]
+# def process(path):  
+# 	for i in os.listdir(path):
+# 		if not os.path.isdir(path + '\\' + i):	
+# 			if i.split('.')[-1].lower() in TargetFileType:
 
-				url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
-				print url
-				if is_new_page(url,time_flag):
+# 				url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
+# 				print url
+# 				if is_new_page(url,time_flag):
 					
-					com=get_news_comment(url)
-					global log
-					log.append(com)
-					global num
-					num=num+1
-					if num%20==0:
-						print '----------------------------------'
-						print num
-						print '----------------------------------'
+# 					com=get_news_comment(url)
+# 					global log
+# 					log.append(com)
+# 					global num
+# 					num=num+1
+# 					if num%20==0:
+# 						print '----------------------------------'
+# 						print num
+# 						print '----------------------------------'
 					
-		else:
-			process(path + '\\'+i)
+# 		else:
+# 			process(path + '\\'+i)
 
 
 
@@ -101,3 +118,4 @@ for i in log:
     fl.write(str(i))
     fl.write("\n")
 fl.close()
+
