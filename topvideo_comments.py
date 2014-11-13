@@ -25,7 +25,6 @@ socket.setdefaulttimeout(10) # 10 秒钟后超时
 
 
 def plot_data(l):
-	plt.figure(1)
 	fig, ax = plt.subplots()
 	counts, bins, patches = ax.hist(l,50,facecolor='yellow', edgecolor='gray')
 
@@ -52,18 +51,13 @@ def plot_data(l):
 	plt.grid(True)
 	plt.xlabel("total reply")
 	plt.ylabel("pages")
-	plt.title(time.strftime('%Y%m%d',time.localtime(time.time()))+"top_news@sina")
-
-
-	plt.figure(2)
-
-
+	plt.title(time.strftime('%Y-%m-%d',time.localtime(time.time()))+"top_news@sina")
 	plt.show()
 
 
-def getTopClick(num,date=time.strftime('%Y%m%d',time.localtime(time.time()))):
-	url='http://top.news.sina.com.cn/ws/GetTopDataList.php?top_type=day&top_cat=www_all&top_time='+date+'&top_show_num='+str(num)+'&top_order=ASC&js_var=all_1_data01'
-	data=(urllib.urlopen(url).read().decode('gb2312','ignore')[18:-2])
+def getTopVideo(num):
+	url='http://top.video.sina.com.cn/ws/GetTopDataList.php?top_type=week&top_cat=sphhzpx&top_time=20141112&top_show_num='+str(num)+'&top_order=DESC&js_var=sp_xw_yypdpx_1_data'
+	data=(urllib.urlopen(url).read().decode('gb2312','ignore')[25:-2])
 	return json.loads(data)
 
 def get_news_comment(url):
@@ -82,42 +76,44 @@ def get_news_comment(url):
 		com=comment["result"]["count"]
     except Exception, e:
     	print e
-    	return "{u'qreply': None, u'total': None, u'show': None}"
+    	return eval("{u'qreply': None, u'total': None, u'show': None}")
     return comment["result"]["count"]
 #########################
 
 t=[]
-tc=getTopClick(10000,"20141111")
+play_reply=[]
+tc=getTopVideo(10000)
 for item in tc["data"]:
+
 	tmp=(get_news_comment(item["url"]))
-	print tmp
+	
+	
+	play_reply.append([tmp['total'],item["top_num"]])
+
+	print item["top_num"],tmp['total']
 	t.append(str(tmp))
 	print item["url"]
 
-
+print play_reply
 qreply_list=[]
 total_list=[]
 show_list=[]
-# print t
 
 
-for line in t:
-	if not line[0]=='{' :
-		continue	
-	if not eval(line)['show']:
-		continue
-	qreply_list.append(eval(line)['qreply'])
-	total_list.append(eval(line)['total'])
-	show_list.append(eval(line)['show'])
+plt.subplots(play_reply)
+
+# for line in t:
+# 	if not line[0]=='{' :
+# 		continue	
+# 	if not eval(line)['show']:
+# 		continue
+# 	qreply_list.append(eval(line)['qreply'])
+# 	total_list.append(eval(line)['total'])
+# 	show_list.append(eval(line)['show'])
 
 
-print len(qreply_list)
+# print len(qreply_list)
+# print len(total_list)
+# print len(show_list)
 
-
-f=open("top_news@sina.txt",'w')
-f.write(str(qreply_list)+'\n')
-f.write(str(total_list)+'\n')
-f.write(str(show_list)+'\n')
-f.write('\n')
-f.close()
-plot_data(total_list)
+# plot_data(total_list)
