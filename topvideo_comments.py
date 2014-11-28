@@ -96,7 +96,7 @@ def get_video_data(date,num):
 		print item["url"]
 
 	print play_reply
-	f=open("vedio_data.txt",'w')
+	f=open("video_data.txt",'w')
 	f.write(str(play_reply)+"\n")
 	f.close()
 
