@@ -46,7 +46,7 @@ def plot_data(l):
 	for count, x in zip(counts, bin_centers):
 	    # Label the raw counts
 	    ax.annotate(str(int(count)), xy=(x, 0), xycoords=('data', 'axes fraction'),
-	        xytext=(0, -30), textcoords='offset points', va='top', ha='center')
+	        xytext=(0, -40), textcoords='offset points', va='top', ha='center')
 
 	    # Label the percentages
 	    percent = '%0.0f%%' % (100 * float(count) / counts.sum())
@@ -58,7 +58,7 @@ def plot_data(l):
 	plt.subplots_adjust(bottom=0.15)
 	plt.grid(True)
 	plt.xlabel("total reply")
-	plt.ylabel("number of item(web pages)")
+	plt.ylabel("pages")
 	plt.title("2014/10/21-2014/10/22  sina new pages")
 	plt.show()
 
