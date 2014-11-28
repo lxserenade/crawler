@@ -14,8 +14,8 @@ from matplotlib.ticker import FormatStrFormatter
 
 
 
-# f=open('./1021-1022.txt','r')
-# af=open('./1021-1022_new.txt','w')
+# f=open('./log.txt','r')
+# af=open('./1025-1027.txt','w')
 # data=f.readlines()
 
 # for line in data:
@@ -63,7 +63,7 @@ def plot_data(l):
 	plt.show()
 
 
-f=open('./1021-1022_new.txt','r')
+f=open('./1025-1027.txt','r')
 data=f.readlines()
 
 qreply_list=[]
