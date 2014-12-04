@@ -93,36 +93,18 @@ def process(path):
 				url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
 				print url
 				if is_new_page(url,time_flag):
-=======
-# num=0
-# time_flag='2014-10-23 00:00:00'
-# #########################
-# # 递归遍历指定的目录  
-# # path-遍历起始绝对路径  
-# TargetFileType=['html','shtml']
-# log=[]
-# def process(path):  
-# 	for i in os.listdir(path):
-# 		if not os.path.isdir(path + '\\' + i):	
-# 			if i.split('.')[-1].lower() in TargetFileType:
-
-# 				url='http:/'+(path + '\\' + i)[8:].replace('\\','/')
-# 				print url
-# 				if is_new_page(url,time_flag):
->>>>>>> 8ceef0398a4d417b016f8e0e8e18c8e5de692791:comments_from_wget.py
+					com=get_news_comment(url)
+					global log
+					log.append(com)
+					global num
+					num=num+1
+					if num%20==0:
+						print '----------------------------------'
+						print num
+						print '----------------------------------'
 					
-# 					com=get_news_comment(url)
-# 					global log
-# 					log.append(com)
-# 					global num
-# 					num=num+1
-# 					if num%20==0:
-# 						print '----------------------------------'
-# 						print num
-# 						print '----------------------------------'
-					
-# 		else:
-# 			process(path + '\\'+i)
+		else:
+			process(path + '\\'+i)
 
 
 
