@@ -1,3 +1,4 @@
+#-*-coding:utf-8-*-
 from matplotlib import pyplot as plt
 
 f = open('video_data.txt', 'r')
@@ -8,6 +9,7 @@ for line in lines:
 	li = eval(line)
 	for item in li:
 		data.append(item)
+	break
 
 print len(data)
 
