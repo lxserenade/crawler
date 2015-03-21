@@ -20,7 +20,7 @@ import numpy as np
 from matplotlib.ticker import FormatStrFormatter
 import socket
 import datetime, calendar 
-
+from my_leastsq import *
 socket.setdefaulttimeout(10) # 10 秒钟后超时
 
 
@@ -56,8 +56,9 @@ def plot_data(l):
 
 
 def getTopVideo(date,num):
-	url='http://top.video.sina.com.cn/ws/GetTopDataList.php?top_type=week&top_cat=sphhzpx&top_time='+date+'&top_show_num='+str(num)+'&top_order=DESC&js_var=sp_xw_yypdpx_1_data'
-	data=(urllib.urlopen(url).read().decode('gb2312','ignore')[25:-2])
+	url='http://top.video.sina.com.cn/ws/GetTopDataList.php?top_type=day&top_cat=www_all&top_time='+date+'&top_show_num='+str(num)+'&top_order=ASC&js_var=all_1_data'
+	data=(urllib.urlopen(url).read().decode('gb2312','ignore'))
+	print data
 	return json.loads(data)
 
 def get_news_comment(url):
@@ -76,32 +77,38 @@ def get_news_comment(url):
 		com=comment["result"]["count"]
     except Exception, e:
     	print e
-    	return eval("{u'qreply': None, u'total': None, u'show': None}")
-    return comment["result"]["count"]
+    	return eval("{u'qreply': None, u'total': None, u'show': None}"),newsid
+    return comment["result"]["count"],newsid
 #########################
 #date format: "%Y%m%d"  "20141001"
 def get_video_data(date,num):
 	t=[]
+	play_num=[]
 	play_reply=[]
 	tc=getTopVideo(date,num)
+	print tc
 	for item in tc["data"]:
 
-		tmp=(get_news_comment(item["url"]))
-		
-		
-		play_reply.append([tmp['total'],item["top_num"]])
+		# tmp1=(get_news_comment(item["url"]))
 
-		print item["top_num"],tmp['total']
-		t.append(str(tmp))
+		
+		
+		
+		play_reply.append(item["top_num"])
+		play_num.append(int(item["top_num"].replace(',','')))	
+		print item["top_num"]
+		
 		print item["url"]
+	test_x=np.array(play_num)
+	print date
+	print test_x
+	leastsq_plot(test_x,date)
 
-	print play_reply
 	f=open("video_data.txt",'a')
 	f.write(str(play_reply)+"\n")
 	f.close()
 
-#get_data("20141010",10000)
-
+get_video_data("20150317",100)
 
 
 #plt.subplots(play_reply)
