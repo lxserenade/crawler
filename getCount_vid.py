@@ -7,7 +7,7 @@ import json
 import time,datetime
 import numpy as np
 from my_leastsq import *
-seed=137516224
+seed=137546224
 vids=[]
 count_data=[]
 getCount_url="http://count.video.sina.com.cn/getCount.php?vids="
@@ -47,7 +47,7 @@ for i in range(100):
 	vids=[]
 
 
-count_data=sorted(count_data,reverse=True)
+count_data=sorted(count_data,reverse=True)[0:100]
 print len(count_data)
 print count_data
 
