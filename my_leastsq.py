@@ -50,6 +50,7 @@ def leastsq_plot(y,date):
 	t1.plot(x,powerlaw(plsq[0],x),label=u"fit") 
 	t1.scatter(x,y1,s=50,color='r',edgecolor='')
 	t1.set_xlim(0,100)
+	t1.set_ylim(bottom=0)
 	t1.set_xlabel("index of video")
 	t1.set_ylabel("popular degree")
 	t1.legend(['fit','origin'])
